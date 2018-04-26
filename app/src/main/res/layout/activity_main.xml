@@ -48,21 +48,21 @@
         app:layout_constraintVertical_bias="0.5">
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/ForceBtn"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="起きろモード" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/SlowBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="ゆっくりモード" />
 
         <RadioButton
-            android:id="@+id/radioButton5"
+            android:id="@+id/ProvBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
