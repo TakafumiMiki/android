@@ -8,8 +8,8 @@
     android:alwaysDrawnWithCache="true"
     android:scrollbars="none"
     tools:context=".MainActivity"
-    tools:layout_editor_absoluteY="81dp">
-
+    tools:layout_editor_absoluteY="81dp"
+    >
     <Button
         android:id="@+id/setalarm"
         android:layout_width="wrap_content"
@@ -30,6 +30,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="68dp"
         android:timePickerMode="spinner"
+        android:theme = "@style/MyClock"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -41,6 +42,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:theme="@style/MyRadioButton"
         app:layout_constraintBottom_toTopOf="@+id/setalarm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +54,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+
             android:text="起きろモード" />
 
         <RadioButton
@@ -59,14 +62,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ゆっくりモード" />
+            android:text="ゆっくりモード"
+             />
 
         <RadioButton
             android:id="@+id/ProvBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="仮眠モード" />
+            android:text="仮眠モード"
+             />
 
     </RadioGroup>
 

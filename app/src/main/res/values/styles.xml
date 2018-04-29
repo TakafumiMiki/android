@@ -7,5 +7,14 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="MyRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlActivated">@color/ColorSkyblue</item>
+        <!-- アクティブ以外の時の色の変更
+        <item name="colorControlNormal">@color/ColorSkyblue</item>
+        -->
+    </style>
+    <style name="MyClock" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/ColorGreen</item>
+    </style>
 
 </resources>
