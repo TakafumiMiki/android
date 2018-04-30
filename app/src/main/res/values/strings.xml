@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">起きろ･･･起きたな(確信)</string>
     <string name="set">set</string>
+    <string name="cancel">cancel</string>
     <string name="action_settings">音の設定</string>
     <string name="action_settings2">read me</string>
 </resources>
