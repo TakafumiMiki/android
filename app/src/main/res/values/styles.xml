@@ -1,20 +1,23 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="MyRadioButton" parent="Theme.AppCompat.Light">
-        <item name="colorControlActivated">@color/ColorSkyblue</item>
+        <item name="colorControlActivated">@color/colorSkyBlue</item>
         <!-- アクティブ以外の時の色の変更
-        <item name="colorControlNormal">@color/ColorSkyblue</item>
+        <item name="colorControlNormal">@color/ColorSkyBlue</item>
         -->
     </style>
     <style name="MyClock" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/ColorGreen</item>
+        <item name="colorControlNormal">@color/colorGreen</item>
+    </style>
+    <style name="switch_theme" parent="Theme.AppCompat.Light">
+        <item name = "colorControlActivated">@color/colorBlue</item>
     </style>
 
 </resources>
