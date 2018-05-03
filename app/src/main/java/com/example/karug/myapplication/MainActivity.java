@@ -72,10 +72,11 @@ public class MainActivity extends AppCompatActivity {
                         default:
                             Toast.makeText(MainActivity.this,"Missing Alarm Set", Toast.LENGTH_SHORT).show();
                     }
-                    
+
                     button1.setText(R.string.cancel);
                     switch1.setChecked(true);
-                    switch1.setText("Set time is " + hour + ":" + minute + "\nMode is " + text);
+                    String min = String.format("%02d", minute);
+                    switch1.setText("Set time is " + hour + ":" + min + "\nMode is " + text);
                     set_flag = true;
                 } else {
                     Toast.makeText(MainActivity.this, "キャンセルしました", Toast.LENGTH_SHORT).show();
