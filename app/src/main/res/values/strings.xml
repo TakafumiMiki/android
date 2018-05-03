@@ -6,4 +6,7 @@
     <string name="sleep_data">前回の睡眠</string>
     <string name="action_settings2">使い方</string>
     <string name="switch_none">Data is None</string>
+    <string name="ForceMode">強制モード</string>
+    <string name="NormalMode">ノーマルモード</string>
+    <string name="NapMode">仮眠モード</string>
 </resources>
