@@ -3,5 +3,7 @@
     <string name="set">set</string>
     <string name="cancel">cancel</string>
     <string name="action_settings">音の設定</string>
-    <string name="action_settings2">read me</string>
+    <string name="sleep_data">前回の睡眠</string>
+    <string name="action_settings2">使い方</string>
+    <string name="switch_none">Data is None</string>
 </resources>

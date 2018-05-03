@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.support.v7.app.AppCompatActivity;
-import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,10 +12,9 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import android.widget.ToggleButton;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,34 +52,59 @@ public class MainActivity extends AppCompatActivity {
                     radio_id = radioButton.getId();
                 }
 
-                //AddAlarm(hour,minute);
-                //Toast.LENGTH_LONG で表示時間4s SHORTは2s
                 if (set_flag == false) {
                     Toast.makeText(
                             MainActivity.this,
                              hour + ":" + minute + "にセットしました\n" + text + radio_id,
                             Toast.LENGTH_SHORT).show();
+                    //NormalAlarm(hour,minute);
+                    switch (radio_id){
+                        case R.id.ForceBtn:
+                            for(int i = 9; i >= 0; i--)
+                                NormalAlarm(hour, minute - i);
+                            break;
+                        case R.id.NormalBtn:
+                            NormalAlarm(hour, minute);
+                            break;
+                        case R.id.ProvBtn:
+                            NormalAlarm(hour - 5,minute);
+                            break;
+                        default:
+                            Toast.makeText(MainActivity.this,"Missing Alarm Set", Toast.LENGTH_SHORT).show();
+                    }
+                    
                     button1.setText(R.string.cancel);
                     switch1.setChecked(true);
+                    switch1.setText("Set time is " + hour + ":" + minute + "\nMode is " + text);
                     set_flag = true;
                 } else {
                     Toast.makeText(MainActivity.this, "キャンセルしました", Toast.LENGTH_SHORT).show();
+                    CancelAlarm();
                     button1.setText(R.string.set);
                     switch1.setChecked(false);
+                    switch1.setText(R.string.switch_none);
                     set_flag = false;
+
                 }
 
             }
         });
     }
 
-    //既存のアラームを使う
-    /*private void  AddAlarm(int hour, int minute){
+    private void NormalAlarm(int hour, int minute){
         Intent it = new Intent(AlarmClock.ACTION_SET_ALARM);
         it.putExtra(AlarmClock.EXTRA_HOUR, hour);
         it.putExtra(AlarmClock.EXTRA_MINUTES, minute);
+        it.putExtra(AlarmClock.EXTRA_SKIP_UI,true);
         startActivity(it);
-    }*/
+    }
+
+    private void ProvAlarm(int hour, int minute){
+    }
+
+    private void CancelAlarm(){
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -96,9 +119,15 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_settings:
                 Toast.makeText(this, "設定メニューへ", Toast.LENGTH_SHORT).show();
                 return true;
+
             case R.id.action_settings2:
-                Toast.makeText(this, "read meへ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "データへ", Toast.LENGTH_SHORT).show();
                 return true;
+
+            case R.id.action_settings3:
+                Toast.makeText(this, "使い方へ", Toast.LENGTH_SHORT).show();
+                return true;
+
             default:
                 Toast.makeText(this, "おぷしょんへ", Toast.LENGTH_SHORT).show();
                 return super.onOptionsItemSelected(item);

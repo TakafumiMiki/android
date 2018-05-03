@@ -55,14 +55,14 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="起きろモード" />
+            android:text="強制モード" />
 
         <RadioButton
-            android:id="@+id/SlowBtn"
+            android:id="@+id/NormalBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ゆっくりモード" />
+            android:text="ノーマルモード" />
 
         <RadioButton
             android:id="@+id/ProvBtn"
@@ -76,18 +76,15 @@
     <Switch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/switch_none"
         android:theme="@style/switch_theme"
-        android:text="On or Off"
-        app:layout_constraintBottom_toTopOf="@+id/alarm"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintHorizontal_bias="0.893"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
