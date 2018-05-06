@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         switch (mode){
             case R.id.ForceBtn:
                 it.putExtra(EXTRA_MESSAGE, text);
+                //誤爆防止のためのサイレント
                 it.putExtra(EXTRA_RINGTONE, VALUE_RINGTONE_SILENT);
                 break;
             case R.id.NormalBtn:
