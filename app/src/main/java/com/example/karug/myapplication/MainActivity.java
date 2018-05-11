@@ -131,6 +131,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(dis);
     }
 
+    /*@Override
+    //アクティブじゃなくなったら
+    protected void onStop() {
+        super.onStop();
+    }*/
+
+    @Override
+    protected void onDestroy() {
+        CancelAlarm( 10);
+        super.onDestroy();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -151,11 +163,6 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_settings3:
                 Toast.makeText(this, "使い方へ", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case R.id.action_settings4 :
-                CancelAlarm(num);
-                Toast.makeText(this, "消しました",Toast.LENGTH_SHORT).show();
                 return true;
 
             default:
