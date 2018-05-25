@@ -2,11 +2,12 @@
     <string name="app_name">alarm</string>
     <string name="set">set</string>
     <string name="cancel">cancel</string>
-    <string name="action_settings">音の設定</string>
+    <string name="action_settings">設定</string>
     <string name="sleep_data">前回の睡眠</string>
     <string name="action_settings2">使い方</string>
     <string name="switch_none">Data is None</string>
     <string name="ForceMode">強制モード</string>
     <string name="NormalMode">ノーマルモード</string>
     <string name="NapMode">仮眠モード</string>
+    <string name="action_settings4">アラームの削除</string>
 </resources>
