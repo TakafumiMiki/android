@@ -1,5 +1,6 @@
 package com.example.karug.myapplication;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -59,8 +60,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             values[0] = event.values[0];
             values[1] = event.values[1];
             values[2] = event.values[2];
-
-            if(sensor_flag && (abs(values[0]) >= 15 || abs(values[1]) >= 15  || abs(values[0]) >= 15)){
+            if(
+                    set_flag && sensor_flag
+                    && (abs(values[0]) >= 12 || abs(values[1]) >= 12  || abs(values[0]) >= 12)
+                    )
+            {
                 time_check();
                 sensor_flag = false;
             }
@@ -134,9 +138,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     button1.setText(R.string.cancel);
                     switch1.setChecked(true);
                     String min = String.format("%02d", minute);
-
                     switch1.setText("Set time is " + hour + ":" + min + "\nMode is " + text);
-
                     set_flag = true;
                     j = NUM - i + 1;
                 } else {
