@@ -21,16 +21,21 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import java.util.Calendar;
 import static android.provider.AlarmClock.*;
+import static java.lang.Math.abs;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     SensorManager mSensorManager;
     Sensor mAccSensor;
-    float[] values = new float[6];
+    static final int RESULT_SUB = 1000;
+    int NUM = 10;
+    private TimePicker tp;
+    float[] values = new float[3];
     private boolean set_flag = false;
-    int i = 10;
+    int i = NUM;
     int j = 0;
-    int set_hour = 6;
+    int set_hour = 8;
     int set_minute = 0;
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -40,20 +45,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            /*x_axis = String.valueOf(event.values[0])
-             *y_axis = String.valueOf(event.values[1])
-             *z_axis = String.valueOf(event.values[2])
-             */
             values[0] = event.values[0];
             values[1] = event.values[1];
             values[2] = event.values[2];
+
+            if(abs(values[0]) >= 10 || abs(values[1]) >= 20  || abs(values[0]) >= 10){
+                time_check();
+            }
         }
 
-        /*String text = "x =" + values[0] +"\n"
-                     +"y =" + values[1] +"\n"
-                     +"z =" + values[2];
-        Toast.makeText(this,text,Toast.LENGTH_SHORT);
-    */
     }
 
     @Override
@@ -64,13 +64,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
-        TimePicker tp = findViewById(R.id.alarm);
+        tp = findViewById(R.id.alarm);
         tp.setHour(set_hour);
         tp.setMinute(set_minute);
         final CompoundButton switch1 = findViewById(R.id.switch1);
         switch1.setOnClickListener(new CompoundButton.OnClickListener() {
             @Override
-            public void  onClick(View v) {
+            public void onClick(View v) {
                 switch1.setChecked(set_flag);
             }
         });
@@ -122,9 +122,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     button1.setText(R.string.cancel);
                     switch1.setChecked(true);
                     String min = String.format("%02d", minute);
+
                     switch1.setText("Set time is " + hour + ":" + min + "\nMode is " + text);
+
                     set_flag = true;
-                    j = 10 - i + 1;
+                    j = NUM - i + 1;
                 } else {
                     Toast.makeText(MainActivity.this, "キャンセルしました", Toast.LENGTH_SHORT).show();
                     CancelAlarm(j);
@@ -132,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     switch1.setChecked(false);
                     switch1.setText(R.string.switch_none);
                     set_flag = false;
-                    i = 10;
+                    i = NUM;
                 }
             }
         });
@@ -170,19 +172,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             startActivity(dis);
     }
 
-    /*private void second_check(){
-        Calendar calendar = Calendar.getInstance();
-        int time1 = calendar.get(Calendar.SECOND);//カレンダーから現時刻の秒数を取得
-        TextView text1 = findViewById(R.id.t_clock);
-        text1.setText(String.valueOf(time1));
-    }*/
-
     private void time_check() {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR);
         int minute = calendar.get(Calendar.MINUTE);
         String text = "センサーでセット";
-        NormalAlarm(hour, minute, R.id.NormalBtn, text);
+        NormalAlarm(hour, minute+1, R.id.NormalBtn, text);
     }
 
     @Override
@@ -193,50 +188,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        int[] res = new int[3];
+        res[0] = NUM;
+        res[1] = set_hour;
+        res[2] = set_minute;
+
         switch (item.getItemId()) {
             case R.id.action_settings:
-                setContentView(R.layout.option_set);
-                Button set_button = findViewById(R.id.set_button);
-                set_button.setOnClickListener(new View.OnClickListener(){
-                EditText set_hour2 = findViewById(R.id.set_hour);
-                EditText set_minute2 = findViewById(R.id.set_minute);
-
-                    @Override
-                    public void onClick(View v) {
-                        if (Integer.parseInt(set_hour2.getText().toString()) <= 23
-                                && Integer.parseInt(set_hour2.getText().toString()) >= 0
-                                && Integer.parseInt(set_minute2.getText().toString()) <= 59
-                                && Integer.parseInt(set_minute2.getText().toString()) >= 0) {
-                            set_hour = Integer.parseInt(set_hour2.getText().toString());
-                            set_minute = Integer.parseInt(set_minute2.getText().toString());
-                            setContentView(R.layout.activity_main);
-                            TimePicker tp = findViewById(R.id.alarm);
-                            tp.setHour(set_hour);
-                            tp.setMinute(set_minute);
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "適切な値が設定されていません",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                Intent intent = new Intent(getApplication(), SubActivity.class);
+                intent.putExtra("result2",res);
+                startActivityForResult( intent, RESULT_SUB );
                 return true;
 
             case R.id.action_settings2:
                 Toast.makeText(this, "データへ", Toast.LENGTH_SHORT).show();
                 return true;
 
-            case R.id.action_settings3:
-                Toast.makeText(this, "使い方へ", Toast.LENGTH_SHORT).show();
-                return true;
-
             case R.id.action_settings4:
                 CancelAlarm(i);
-                Toast.makeText(this, "消しました",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "消しました", Toast.LENGTH_SHORT).show();
                 return true;
 
             default:
                 Toast.makeText(this, "おぷしょんへ", Toast.LENGTH_SHORT).show();
-            return super.onOptionsItemSelected(item);
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -244,5 +219,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-}
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (resultCode == RESULT_OK && requestCode == RESULT_SUB && null != intent) {
+            int[] res = intent.getIntArrayExtra("result");
+            NUM = res[0];
+
+            set_hour = res[1];
+            tp.setHour(res[1]);
+            set_minute = res[2];
+            tp.setMinute(res[2]);
+        }
+    }
+}
