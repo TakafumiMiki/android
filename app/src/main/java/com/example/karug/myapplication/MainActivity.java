@@ -24,13 +24,14 @@ import static android.provider.AlarmClock.*;
 import static java.lang.Math.abs;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
-    SensorManager mSensorManager;
-    Sensor mAccSensor;
+    SensorManager sm;
+    Sensor ac;
     static final int RESULT_SUB = 1000;
     int NUM = 10;
     private TimePicker tp;
     float[] values = new float[3];
     private boolean set_flag = false;
+    private boolean sensor_flag = true;
     int i = NUM;
     int j = 0;
     int set_hour = 8;
@@ -39,7 +40,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onPause() {
         super.onPause();
-        mSensorManager.unregisterListener(this);
+        if(!sensor_flag){
+            sm.unregisterListener(this);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        ac = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);  //加速度センサの取得
+        sm.registerListener(this, ac, SensorManager.SENSOR_DELAY_NORMAL);  //加速度センサのリスナー登録
     }
 
     @Override
@@ -49,21 +60,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             values[1] = event.values[1];
             values[2] = event.values[2];
 
-            if(abs(values[0]) >= 10 || abs(values[1]) >= 20  || abs(values[0]) >= 10){
+            if(sensor_flag && (abs(values[0]) >= 15 || abs(values[1]) >= 15  || abs(values[0]) >= 15)){
                 time_check();
+                sensor_flag = false;
             }
         }
-
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        ac = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
+
         tp = findViewById(R.id.alarm);
         tp.setHour(set_hour);
         tp.setMinute(set_minute);
@@ -99,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     radio_id = R.id.NormalBtn;
                 }
 
-                if (set_flag == false) {
+                if (!set_flag) {
                     /*Toast.makeText(
                             MainActivity.this,
                             hour + ":" + minute + "にセットしました\n" + text,
@@ -174,10 +186,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private void time_check() {
         Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         String text = "センサーでセット";
-        NormalAlarm(hour, minute+1, R.id.NormalBtn, text);
+        NormalAlarm(hour, minute + 1, R.id.NormalBtn, text);
+        //現時刻でセットすると明日になるため1分遅らせる
     }
 
     @Override
@@ -217,7 +230,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -225,7 +237,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (resultCode == RESULT_OK && requestCode == RESULT_SUB && null != intent) {
             int[] res = intent.getIntArrayExtra("result");
             NUM = res[0];
-
             set_hour = res[1];
             tp.setHour(res[1]);
             set_minute = res[2];
