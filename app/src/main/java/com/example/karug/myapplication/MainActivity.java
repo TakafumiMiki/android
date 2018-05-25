@@ -1,6 +1,5 @@
 package com.example.karug.myapplication;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -15,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
@@ -213,10 +211,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Intent intent = new Intent(getApplication(), SubActivity.class);
                 intent.putExtra("result2",res);
                 startActivityForResult( intent, RESULT_SUB );
-                return true;
-
-            case R.id.action_settings2:
-                Toast.makeText(this, "データへ", Toast.LENGTH_SHORT).show();
                 return true;
 
             case R.id.action_settings4:
