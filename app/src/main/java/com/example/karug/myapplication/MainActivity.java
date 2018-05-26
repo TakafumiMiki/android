@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 return true;
 
             case R.id.action_settings4:
-                CancelAlarm(i);
+                CancelAlarm(NUM);
                 Toast.makeText(this, "消しました", Toast.LENGTH_SHORT).show();
                 return true;
 
