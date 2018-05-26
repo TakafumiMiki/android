@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             values[2] = event.values[2];
             if(
                     set_flag && sensor_flag
-                    && (abs(values[0]) >= 12 || abs(values[1]) >= 12  || abs(values[0]) >= 12)
+                    && (abs(values[0]) >= 12 || abs(values[1]) >= 12  || abs(values[2]) >= 12)
                     )
             {
                 time_check();
