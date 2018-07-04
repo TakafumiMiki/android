@@ -6,13 +6,13 @@
     tools:context=".MainActivity">
     <item
         android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+        android:title="使い方"
         android:orderInCategory="100"
         />
 
     <item
         android:id="@+id/action_settings4"
-        android:title="@string/action_settings4"
+        android:title="全アラームの削除"
         android:orderInCategory="200"
         />
 </menu>

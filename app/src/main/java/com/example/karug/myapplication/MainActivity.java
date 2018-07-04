@@ -25,12 +25,13 @@ import static java.lang.Math.abs;
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
     SensorManager sm;
     Sensor ac;
-    static final int RESULT_SUB = 1000;
     int NUM = 10;
     private TimePicker tp;
     float[] values = new float[3];
     private boolean set_flag = false;
     private boolean sensor_flag = true;
+    private boolean time_flag = false;
+    private boolean hour_checker = false;
     int i = NUM;
     int j = 0;
     int set_hour = 8;
@@ -38,8 +39,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     protected void onPause() {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        if(sensor_flag && hour_checker){//センサーが利用可能で分が19以下たっだとき
+            if(set_hour - 1 == hour && 60 - set_minute <= minute)
+            time_flag = true;
+        }
+        else if(sensor_flag && !hour_checker){//センサーが利用可能で分が20以上だった時
+            if(set_hour == hour && set_minute - 20 <= minute)
+                time_flag = true;
+        }
         super.onPause();
-        if(!sensor_flag){
+        if (!sensor_flag) {
             sm.unregisterListener(this);
         }
     }
@@ -47,6 +59,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         super.onResume();
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        if(sensor_flag && hour_checker){//センサーが利用可能で分が19以下たっだとき
+            if(set_hour - 1 == hour && 60 - set_minute <= minute)
+                time_flag = true;
+        }
+        else if(sensor_flag && !hour_checker){//センサーが利用可能で分が20以上だった時
+            if(set_hour == hour && set_minute - 20 <= minute)
+                time_flag = true;
+        }
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         ac = sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);  //加速度センサの取得
         sm.registerListener(this, ac, SensorManager.SENSOR_DELAY_NORMAL);  //加速度センサのリスナー登録
@@ -58,11 +81,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             values[0] = event.values[0];
             values[1] = event.values[1];
             values[2] = event.values[2];
-            if(
-                    set_flag && sensor_flag
-                    && (abs(values[0]) >= 12 || abs(values[1]) >= 12  || abs(values[2]) >= 12)
-                    )
-            {
+            /*
+            ここから加速度センサの大きさ比較でアラームを鳴らす(修正箇所)
+            ifの条件として
+            加速度を適切なものに設定する
+            設定時間の20分前にflagをたて設定時間が過ぎたときにtrueにし、アラームを鳴らせる状態にする
+            */
+
+            if (
+                    set_flag && sensor_flag && time_flag
+                            && (abs(values[0]) >= 15 || abs(values[1]) >= 15 || abs(values[2]) >= 15)
+                    ) {
                 time_check();
                 sensor_flag = false;
             }
@@ -100,6 +129,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 int radio_check = rg.getCheckedRadioButtonId();
                 String text;
                 int radio_id;
+                if(minute <= 19)
+                    hour_checker = true;
 
                 if (radio_check != -1) {
                     // 選択されているラジオボタンの取得
@@ -199,44 +230,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int[] res = new int[3];
-        res[0] = NUM;
-        res[1] = set_hour;
-        res[2] = set_minute;
-
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent intent = new Intent(getApplication(), SubActivity.class);
-                intent.putExtra("result2",res);
-                startActivityForResult( intent, RESULT_SUB );
-                return true;
-
-            case R.id.action_settings4:
-                CancelAlarm(NUM);
-                Toast.makeText(this, "消しました", Toast.LENGTH_SHORT).show();
-                return true;
-
-            default:
-                Toast.makeText(this, "おぷしょんへ", Toast.LENGTH_SHORT).show();
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        if (resultCode == RESULT_OK && requestCode == RESULT_SUB && null != intent) {
-            int[] res = intent.getIntArrayExtra("result");
-            NUM = res[0];
-            set_hour = res[1];
-            tp.setHour(res[1]);
-            set_minute = res[2];
-            tp.setMinute(res[2]);
-        }
-    }
 }
