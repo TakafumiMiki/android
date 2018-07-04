@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private boolean set_flag = false;
     private boolean sensor_flag = true;
     private boolean time_flag = false;
-    private boolean hour_checker = false;
+    private boolean hour_checker = true;
     int i = NUM;
     int j = 0;
     public int set_hour = 8;
@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        if(getminute <= 19 && getminute >= 0){
-            hour_checker = true;
+        if(getminute >=  20 && getminute <= 60){
+            hour_checker = false;
         }
 
         if(hour_checker){//センサーが利用可能で分が19以下たっだとき
