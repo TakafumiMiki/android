@@ -18,7 +18,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Date;
+
 import static android.provider.AlarmClock.*;
 import static java.lang.Math.abs;
 
@@ -31,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private boolean set_flag = false;
     private boolean sensor_flag = true;
     private boolean time_flag = false;
-    private boolean hour_checker = true;
     int i = NUM;
     int j = 0;
     public int set_hour = 8;
@@ -59,21 +63,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         TimePicker tp = findViewById(R.id.alarm);
         int gethour = tp.getHour();
         int getminute = tp.getMinute();
+
         Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE,-20);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        if(getminute >=  20 && getminute <= 60){
-            hour_checker = false;
-        }
-
-        if(hour_checker){//センサーが利用可能で分が19以下たっだとき
-            if(gethour - 1 == hour && 60 - getminute <= minute)
-                time_flag = true;
-        }
-        else if(!hour_checker){//センサーが利用可能で分が20以上だった時
-            if(gethour == hour && getminute - 20 <= minute)
-                time_flag = true;
+        if(gethour == hour &&  getminute >= minute){
+            time_flag = true;
         }
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             values[0] = event.values[0];
@@ -85,12 +82,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             加速度を適切なものに設定する
             設定時間の20分前にflagをたて設定時間が過ぎたときにtrueにし、アラームを鳴らせる状態にする
             */
-
             if (
                     set_flag && sensor_flag && time_flag
                             && (abs(values[0]) >= 12 || abs(values[1]) >= 12 || abs(values[2]) >= 12)
                     ) {
-                Toast.makeText(MainActivity.this, "時間は" + gethour + "分は" + getminute +"チェッカ" + hour_checker,Toast.LENGTH_SHORT).show();
                 time_check();
                 sensor_flag = false;
             }
@@ -223,9 +218,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(getApplication(), use_activity.class);
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Toast.makeText(this, "消しました", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
                 return true;
 
             case R.id.action_settings4:
